@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import ToDoInput from '../../components/todo-input/todo-input';
 import ToDoList from '../../components/todo-list/todo-list';
@@ -21,17 +22,19 @@ class ToDo extends Component {
 
   render() {
     const { activeFilter, taskText } = this.state;
-    const tasksList = [];
-    const isTasksExist = tasksList && tasksList.length > 0;
+    const { tasks } = this.props;
+    const isTasksExist = tasks && tasks.length > 0;
 
     return (
       <div className="todo-wrapper">
         <ToDoInput onChange={this.handleInputChange} value={taskText} />
-        {isTasksExist && <ToDoList tasksList={tasksList} />}
-        {isTasksExist && <Footer amount={tasksList.length} activeFilter={activeFilter} />}
+        {isTasksExist && <ToDoList tasksList={tasks} />}
+        {isTasksExist && <Footer amount={tasks.length} activeFilter={activeFilter} />}
       </div>
     );
   }
 }
 
-export default ToDo;
+export default connect(state => ({
+  tasks: state.tasks,
+}))(ToDo);
