@@ -35,22 +35,36 @@ class ToDo extends Component {
     }
   }
 
+  filterTasks = (tasks, activeFilter) => {
+    switch (activeFilter) {
+      case 'completed':
+        return tasks.filter(task => task.isCompleted);
+        break;
+      case 'active':
+        return tasks.filter(task => !task.isCompleted);
+        break;
+      default:
+        return tasks;
+    }
+  }
+
   render() {
     const { taskText } = this.state;
-    const { tasks, removeTask, completeTask, filter, changeFilter } = this.props;
+    const { tasks, removeTask, completeTask, filters, changeFilter } = this.props;
     const isTasksExist = tasks && tasks.length > 0;
+    const filteredTasks = this.filterTasks(tasks, filters);
 
     return (
       <div className="todo-wrapper">
         <ToDoInput onKeyPress={this.addTast} onChange={this.handleInputChange} value={taskText} />
-        {isTasksExist && <ToDoList completeTask={completeTask} tasksList={tasks} removeTask={removeTask} />}
-        {isTasksExist && <Footer changeFilter={changeFilter} amount={tasks.length} activeFilter={filter} />}
+        {isTasksExist && <ToDoList completeTask={completeTask} tasksList={filteredTasks} removeTask={removeTask} />}
+        {isTasksExist && <Footer changeFilter={changeFilter} amount={tasks.length} activeFilter={filters} />}
       </div>
     );
   }
 }
 
-export default connect(({ tasks, filter }) => ({
+export default connect(({ tasks, filters }) => ({
   tasks,
-  filter,
+  filters,
 }), { addTast, removeTask, completeTask, changeFilter })(ToDo);
