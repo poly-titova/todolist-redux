@@ -6,38 +6,27 @@ import Footer from '../../components/footer/footer';
 
 import './todo.css';
 
-const TASKS = [
-  {
-    id: 1,
-    text: 'Learn ReactJS',
-    isCompleted: true,
-  },
-  {
-    id: 2,
-    text: 'Learn Redux',
-    isCompleted: false,
-  },
-  {
-    id: 3,
-    text: 'Learn React Router',
-    isCompleted: false,
-  }
-];
-
 class ToDo extends Component {
 
   state = {
     activeFilter: 'all',
+    taskText: ''
+  }
+
+  handleInputChange = ({ target: { value } }) => {
+    this.setState({
+      taskText: value,
+    })
   }
 
   render() {
-    const { activeFilter } = this.state;
-    const tasksList = TASKS;
+    const { activeFilter, taskText } = this.state;
+    const tasksList = [];
     const isTasksExist = tasksList && tasksList.length > 0;
 
     return (
       <div className="todo-wrapper">
-        <ToDoInput />
+        <ToDoInput onChange={this.handleInputChange} value={taskText} />
         {isTasksExist && <ToDoList tasksList={tasksList} />}
         {isTasksExist && <Footer amount={tasksList.length} activeFilter={activeFilter} />}
       </div>
