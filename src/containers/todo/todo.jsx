@@ -24,7 +24,7 @@ class ToDo extends Component {
   addTast = ({ key }) => {
     const { taskText } = this.state;
 
-    if (taskText.length > 3 && key == 'Enter') {
+    if (taskText.length > 3 && key === 'Enter') {
       const { addTast } = this.props;
 
       addTast((new Date()).getTime(), taskText, false);
@@ -39,10 +39,8 @@ class ToDo extends Component {
     switch (activeFilter) {
       case 'completed':
         return tasks.filter(task => task.isCompleted);
-        break;
       case 'active':
         return tasks.filter(task => !task.isCompleted);
-        break;
       default:
         return tasks;
     }
